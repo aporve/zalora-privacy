@@ -69,11 +69,11 @@
 
 
             <div class="main py-2 justify-content-center px-3" style="position: relative;">
-                <p>Hi, <samp id="name">Aporve</samp>  All our customer service agents are offline now. I am a Bot, your ZALORA virtual assistant. No worries, I will try to help you as much as I can.</p>
+                <p>Hi, <samp id="name">Aporve</samp>!  All our customer service agents are offline now. I am a Bot, your ZALORA virtual assistant. No worries, I will try to help you as much as I can.</p>
                 <p style="color: red;">By continuing this chat, you consent to ZALORA’s collection and processing of any personal data that you share with us for the Purposes specified in and as set out in our Privacy Policy at <a href="https://www.zalora.com.my/privacy-policy/" target="_blank">here</a></p>
                 <div class="d-flex">
-                    <button id="submit" class="btn1 w-50 mx-3" type="button" onclick="" value="submit">Agree and Submit</button>
-                    <button id="Exit" class="btn1 w-25 mx-2" type="button" onclick=""  value="Exit">Exit</button>
+                    <button id="submit" class="btn1 w-50 mx-3" type="button" onclick="return submit()" value="submit">Agree and Submit</button>
+                    <button id="Exit" class="btn1 w-25 mx-2" type="button" onclick="return exit()"  value="Exit">Exit</button>
                 </div>
                 
             </div>
@@ -88,21 +88,52 @@
         $( document ).ready(function() {
             
             let searchParams = new URLSearchParams(window.location.search)
-          if(searchParams.has('username')){
+            if(searchParams.has('username')){
             let username = searchParams.get('username')
             console.error( username );
             $("#name").text(username);
-           
-           
-           
-           
-            // document.getElementById('username').value = username;
-            // document.getElementById('emailaddress').value = emailaddress;
-            // document.getElementById('ordernumber').value = ordernumber;
           }
-          
-
         });
+
+        function submit() {
+            var raw = JSON.stringify({
+                  "details": {
+                  "event" : 'submit'
+                }
+            });
+
+            console.log(raw);
+
+            window.parent.postMessage(JSON.stringify({
+                event_code: 'ym-client-event', data: JSON.stringify({
+                    event: {
+                        code: "userdetails-event",
+                        data: raw,
+                        }
+                })
+            }), '*');
+
+        }
+
+        function exit() {
+            var raw = JSON.stringify({
+                  "details": {
+                  "event" : 'exit'
+                }
+            });
+
+            console.log(raw);
+            window.parent.postMessage(JSON.stringify({
+                event_code: 'ym-client-event', data: JSON.stringify({
+                    event: {
+                        code: "userdetails-event",
+                        data: raw,
+                        }
+                })
+            }), '*');
+
+        }
+
     </script>
 </body>
 </html>
